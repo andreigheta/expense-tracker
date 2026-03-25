@@ -12,3 +12,15 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+
+  mail:
+    host: sandbox.smtp.mailtrap.io
+    port: 2525
+    username: bc5d27e2c396d3
+    password: 7476213b93e64b
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
