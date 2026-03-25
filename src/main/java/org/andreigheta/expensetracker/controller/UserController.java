@@ -1,5 +1,6 @@
 package org.andreigheta.expensetracker.controller;
 
+import org.andreigheta.expensetracker.dto.UserLoginDto;
 import org.andreigheta.expensetracker.dto.UserRegisterDto;
 import org.andreigheta.expensetracker.dto.UserResponseDto;
 import org.andreigheta.expensetracker.service.UserService;
@@ -21,5 +22,11 @@ public class UserController {
 		UserResponseDto response = userService.registerUser(registerDto);
 
 		return new ResponseEntity<>(response, HttpStatus.CREATED);
+	}
+
+	@PostMapping("/login")
+	public ResponseEntity<String> login(@RequestBody UserLoginDto loginDto) {
+		String jwtToken = userService.loginUser(loginDto);
+		return ResponseEntity.ok(jwtToken);
 	}
 }
