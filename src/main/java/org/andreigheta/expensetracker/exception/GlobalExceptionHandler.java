@@ -42,4 +42,14 @@ public class GlobalExceptionHandler {
 		);
 		return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
+
+	@ExceptionHandler(org.springframework.security.access.AccessDeniedException.class)
+	public ResponseEntity<ErrorResponse> handleAccessDeniedException(org.springframework.security.access.AccessDeniedException ex) {
+		ErrorResponse error = new ErrorResponse(
+				HttpStatus.FORBIDDEN.value(),
+				"Access forbidden! You do not have the role to access this page",
+				LocalDateTime.now()
+		);
+		return new ResponseEntity<>(error, HttpStatus.FORBIDDEN);
+	}
 }

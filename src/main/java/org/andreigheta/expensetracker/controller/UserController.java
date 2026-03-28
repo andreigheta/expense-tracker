@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 @RestController
 @RequestMapping("/api/users")
@@ -28,5 +29,11 @@ public class UserController {
 	public ResponseEntity<String> login(@RequestBody UserLoginDto loginDto) {
 		String jwtToken = userService.loginUser(loginDto);
 		return ResponseEntity.ok(jwtToken);
+	}
+
+	@GetMapping("/admin-only")
+	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
+	public ResponseEntity<String> adminPing() {
+		return ResponseEntity.ok("If you're seeing this that means you are an administrator.");
 	}
 }

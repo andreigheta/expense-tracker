@@ -3,8 +3,10 @@ package org.andreigheta.expensetracker.service;
 import org.andreigheta.expensetracker.dto.UserLoginDto;
 import org.andreigheta.expensetracker.dto.UserRegisterDto;
 import org.andreigheta.expensetracker.dto.UserResponseDto;
+import org.andreigheta.expensetracker.entity.Role;
 import org.andreigheta.expensetracker.entity.User;
 import org.andreigheta.expensetracker.exception.DuplicateResourceException;
+import org.andreigheta.expensetracker.repository.RoleRepository;
 import org.andreigheta.expensetracker.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.andreigheta.expensetracker.security.JwtService;
@@ -19,6 +21,7 @@ import org.springframework.stereotype.Service;
 public class UserService {
 
 	private final UserRepository userRepository;
+	private final RoleRepository roleRepository;
 	private final JavaMailSender mailSender;
 	private final PasswordEncoder passwordEncoder;
 	private final AuthenticationManager authenticationManager;
@@ -34,6 +37,9 @@ public class UserService {
 		user.setLastName(registerDto.getLastName());
 		user.setEmail(registerDto.getEmail());
 		user.setPassword(passwordEncoder.encode(registerDto.getPassword()));
+		Role userRole = roleRepository.findByName("ROLE_USER")
+				.orElseThrow(() -> new RuntimeException("Default role not found in DB"));
+		user.getRoles().add(userRole);
 
 		User savedUser = userRepository.save(user);
 
